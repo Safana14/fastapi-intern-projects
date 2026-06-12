@@ -8,12 +8,12 @@ books = {}
 
 #Create GET All Books
 @router.get("/books")
-def get_books():
+async def get_books():
     return books
 
 #Create GET Single Book
 @router.get("/books/{book_id}")
-def get_book(book_id: int):
+async def get_book(book_id: int):
 
     if book_id not in books:
         raise HTTPException(
@@ -25,7 +25,7 @@ def get_book(book_id: int):
 
 #Create POST Endpoint
 @router.post("/books")
-def create_book(book_id: int, book: Book):
+async def create_book(book_id: int, book: Book):
 
     books[book_id] = book
 
@@ -36,7 +36,7 @@ def create_book(book_id: int, book: Book):
 
 #Create PUT Endpoint
 @router.put("/books/{book_id}")
-def update_book(book_id: int, book: Book):
+async def update_book(book_id: int, book: Book):
 
     if book_id not in books:
         raise HTTPException(
@@ -53,7 +53,7 @@ def update_book(book_id: int, book: Book):
 
 #Create DELETE Endpoint
 @router.delete("/books/{book_id}")
-def delete_book(book_id: int):
+async def delete_book(book_id: int):
 
     if book_id not in books:
         raise HTTPException(
@@ -66,4 +66,26 @@ def delete_book(book_id: int):
     return {
         "message": "Book deleted",
         "book": deleted
+    }
+
+#Add Background Task Endpoints
+from fastapi import BackgroundTasks
+
+#Create Notification Function
+def send_notification(book_id: int):
+    print(f"Notification sent for book {book_id}")
+
+#Add Endpoint
+@router.post("/books/{book_id}/notify")
+async def notify_book(
+    book_id: int,
+    background_tasks: BackgroundTasks
+):
+    background_tasks.add_task(
+        send_notification,
+        book_id
+    )
+
+    return {
+        "message": f"Notification scheduled for book {book_id}"
     }
