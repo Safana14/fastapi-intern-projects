@@ -8,12 +8,12 @@ books = {}
 
 #Create GET All Books
 @router.get("/books")
-async def get_books():
+def get_books():
     return books
 
 #Create GET Single Book
 @router.get("/books/{book_id}")
-async def get_book(book_id: int):
+def get_book(book_id: int):
 
     if book_id not in books:
         raise HTTPException(
@@ -25,7 +25,7 @@ async def get_book(book_id: int):
 
 #Create POST Endpoint
 @router.post("/books")
-async def create_book(book_id: int, book: Book):
+def create_book(book_id: int, book: Book):
 
     books[book_id] = book
 
@@ -36,7 +36,7 @@ async def create_book(book_id: int, book: Book):
 
 #Create PUT Endpoint
 @router.put("/books/{book_id}")
-async def update_book(book_id: int, book: Book):
+def update_book(book_id: int, book: Book):
 
     if book_id not in books:
         raise HTTPException(
@@ -53,7 +53,7 @@ async def update_book(book_id: int, book: Book):
 
 #Create DELETE Endpoint
 @router.delete("/books/{book_id}")
-async def delete_book(book_id: int):
+def delete_book(book_id: int):
 
     if book_id not in books:
         raise HTTPException(
@@ -77,7 +77,7 @@ def send_notification(book_id: int):
 
 #Add Endpoint
 @router.post("/books/{book_id}/notify")
-async def notify_book(
+def notify_book(
     book_id: int,
     background_tasks: BackgroundTasks
 ):
