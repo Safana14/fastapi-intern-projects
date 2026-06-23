@@ -13,3 +13,5 @@
 ## Run
 
 uvicorn app.main:app --reload
+
+Day 17 CRUD endpoints completed.
