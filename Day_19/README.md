@@ -13,5 +13,18 @@
 ## Run
 
 uvicorn app.main:app --reload
+# Sentiment Journal API
 
-Day 17 CRUD endpoints completed.
+## Setup
+
+```bash
+pip install -r requirements.txt
+
+
+---
+
+## Step 10: Commit Day 19
+
+```powershell
+git checkout -b day19-env-deploy
+https://fastapi-intern-projects.onrender.com
