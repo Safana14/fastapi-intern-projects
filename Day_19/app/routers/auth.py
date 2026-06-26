@@ -9,7 +9,7 @@ from app.security import hash_password, verify_password
 from app.auth import create_access_token
 
 from app.dependencies import get_current_user
-
+from fastapi.security import OAuth2PasswordRequestForm
 router = APIRouter(
     prefix="/auth",
     tags=["Authentication"]
@@ -51,11 +51,11 @@ async def register(
 
 @router.post("/login")
 async def login(
-
- user: UserLogin,    db: AsyncSession = Depends(get_db)
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: AsyncSession = Depends(get_db)
 ):
     result = await db.execute(
-        select(User).where(User.email == user.email)
+        select(User).where(User.email == form_data.username)
     )
 
     db_user = result.scalar_one_or_none()
@@ -66,10 +66,8 @@ async def login(
             detail="Invalid email or password"
         )
 
-    
-
     if not verify_password(
-        user.password,
+        form_data.password,
         db_user.hashed_password
     ):
         raise HTTPException(
